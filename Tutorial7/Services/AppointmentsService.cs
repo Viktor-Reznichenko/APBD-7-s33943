@@ -23,9 +23,10 @@ public class AppointmentsService : IAppointmentsService
         command.Connection = connection;
         command.CommandText = query;
 
-        var reader = await command.ExecuteReaderAsync();
-        
         var appointments = new List<AppointmentListDto>();
+
+        await using var reader = await command.ExecuteReaderAsync();
+        
         while (await reader.ReadAsync())
         {
             var appointment = new AppointmentListDto()
